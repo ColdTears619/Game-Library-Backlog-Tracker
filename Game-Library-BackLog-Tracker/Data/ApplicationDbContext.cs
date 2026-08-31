@@ -11,4 +11,20 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<Game> Games { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Game>().Property(g => g.Name).HasMaxLength(200).IsRequired();
+
+        modelBuilder.Entity<Game>().Property(g => g.Description).HasMaxLength(2000);
+
+        modelBuilder.Entity<Game>().Property(g => g.ReleaseDate).IsRequired();
+
+        modelBuilder.Entity<Game>().Property(g => g.Developer)
+        .HasMaxLength(150).IsRequired();
+
+        modelBuilder.Entity<Game>().Property(g => g.Publisher).HasMaxLength(150).IsRequired();
+    }
 }
