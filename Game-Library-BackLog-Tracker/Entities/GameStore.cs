@@ -15,6 +15,8 @@ public class GameStore
 
     public DateTime CreatedAt { get; private set; }
 
+    public ICollection<GameListing> GameListings;
+
     public GameStore(string storeName, string? webSiteUrl)
     {
         StoreName = storeName;

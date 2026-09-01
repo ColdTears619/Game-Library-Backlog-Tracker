@@ -14,6 +14,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<GameStore> GameStores { get; set; }
 
+    public DbSet<GameListing> GameListings { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -30,5 +32,11 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Game>().Property(g => g.Publisher).HasMaxLength(150).IsRequired();
 
         modelBuilder.Entity<GameStore>().HasIndex(gs => gs.StoreName).IsUnique();
+
+        modelBuilder.Entity<GameListing>().HasOne(g => g.Game).WithMany(gl => gl.GameListings).HasForeignKey(gi => gi.GameId).OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<GameListing>().HasOne(gs => gs.GameStores).WithMany(gl => gl.GameListings).HasForeignKey(gsi => gsi.GameStoreId).OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<GameListing>().HasIndex(gl => new { gl.GameId, gl.GameStoreId }).IsUnique();
     }
 }
