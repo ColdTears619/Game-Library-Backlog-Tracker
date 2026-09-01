@@ -12,6 +12,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Game> Games { get; set; }
 
+    public DbSet<GameStore> GameStores { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -26,5 +28,7 @@ public class ApplicationDbContext : DbContext
         .HasMaxLength(150).IsRequired();
 
         modelBuilder.Entity<Game>().Property(g => g.Publisher).HasMaxLength(150).IsRequired();
+
+        modelBuilder.Entity<GameStore>().HasIndex(gs => gs.StoreName).IsUnique();
     }
 }
